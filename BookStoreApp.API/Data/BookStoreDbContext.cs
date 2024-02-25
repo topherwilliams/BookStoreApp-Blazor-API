@@ -51,22 +51,18 @@ public partial class BookStoreDbContext : DbContext
             entity.Property(e => e.AuthorId).HasColumnName("author_id");
             entity.Property(e => e.Image)
                 .HasMaxLength(50)
-                .IsFixedLength()
                 .HasColumnName("image");
             entity.Property(e => e.Isbn)
                 .HasMaxLength(50)
-                .IsFixedLength()
                 .HasColumnName("ISBN");
             entity.Property(e => e.Price)
                 .HasColumnType("decimal(18, 2)")
                 .HasColumnName("price");
             entity.Property(e => e.Summary)
                 .HasMaxLength(250)
-                .IsFixedLength()
                 .HasColumnName("summary");
             entity.Property(e => e.Title)
                 .HasMaxLength(50)
-                .IsFixedLength()
                 .HasColumnName("title");
             entity.Property(e => e.Year).HasColumnName("year");
 

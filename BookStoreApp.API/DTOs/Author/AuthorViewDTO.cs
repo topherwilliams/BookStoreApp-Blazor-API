@@ -16,8 +16,6 @@ namespace BookStoreApp.API.DTOs.Author
         [StringLength(250)]
         public string Bio {  get; set; }
 
-        public ICollection<Book> Books { get; set; } = new List<Book>();
-
 
     }
 }
