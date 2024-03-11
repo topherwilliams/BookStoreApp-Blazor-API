@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34601.278
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BookStoreApp.API", "BookStoreApp.API\BookStoreApp.API.csproj", "{3E30DA87-2AA3-4B45-B6F7-7822C0641E77}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookStoreApp.API", "BookStoreApp.API\BookStoreApp.API.csproj", "{3E30DA87-2AA3-4B45-B6F7-7822C0641E77}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BookStoreApp.Blazor.Server.UI", "BookStoreApp.Blazor.Server.UI\BookStoreApp.Blazor.Server.UI.csproj", "{C9EB94DE-A511-4DE4-9EA4-412886A05FA2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{3E30DA87-2AA3-4B45-B6F7-7822C0641E77}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3E30DA87-2AA3-4B45-B6F7-7822C0641E77}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3E30DA87-2AA3-4B45-B6F7-7822C0641E77}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C9EB94DE-A511-4DE4-9EA4-412886A05FA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C9EB94DE-A511-4DE4-9EA4-412886A05FA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C9EB94DE-A511-4DE4-9EA4-412886A05FA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C9EB94DE-A511-4DE4-9EA4-412886A05FA2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
