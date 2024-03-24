@@ -1,8 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using BookStoreApp.API.Models;
+using System.ComponentModel.DataAnnotations;
 
 namespace BookStoreApp.API.DTOs.Book
 {
-    public class BookReadOnlyDTO
+    public class BookReadOnlyDTO: BaseDto
     {
         public string? Title { get; set; }
 

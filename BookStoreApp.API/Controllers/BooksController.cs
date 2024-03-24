@@ -52,14 +52,14 @@ namespace BookStoreApp.API.Controllers
 
         // GET: api/Books/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<BookReadOnlyDTO>> GetBook(int id)
+        public async Task<ActionResult<BookDetailsDTO>> GetBook(int id)
         {
             try
             {
                 var bookDTO = await _context.Books
                     .Include(x => x.Author)
                     .Where(q => q.Id == id)
-                    .ProjectTo<BookReadOnlyDTO>(mapper.ConfigurationProvider)
+                    .ProjectTo<BookDetailsDTO>(mapper.ConfigurationProvider)
                     .FirstOrDefaultAsync();
 
                 if (bookDTO == null) 
@@ -95,8 +95,9 @@ namespace BookStoreApp.API.Controllers
                 logger.LogWarning($"PUT - {nameof(PutBook)} - ID '{id}' not found.");
                 return NotFound();
             }
-
-            _context.Entry(mapper.Map<Author>(updatedBook)).State = EntityState.Modified;
+            
+            mapper.Map(updatedBook, existingBook);
+            _context.Entry(existingBook).State = EntityState.Modified;
 
             try
             {

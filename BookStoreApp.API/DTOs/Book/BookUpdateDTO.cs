@@ -1,12 +1,13 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using BookStoreApp.API.Data;
+using BookStoreApp.API.Models;
 
 namespace BookStoreApp.API.DTOs.Book
 {
-    public class BookUpdateDTO
+    public class BookUpdateDTO: BaseDto
     {
         [Required]
-        public int Id { get; set; }
+        public int AuthorId { get; set; }
 
         [Required]
         [StringLength(50)]
@@ -26,8 +27,6 @@ namespace BookStoreApp.API.DTOs.Book
 
 
         public decimal? Price { get; set; }
-
-        public int? AuthorId { get; set; }
 
     }
 }
