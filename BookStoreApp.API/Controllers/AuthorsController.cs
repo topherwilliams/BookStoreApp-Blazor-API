@@ -11,6 +11,8 @@ using AutoMapper;
 using System.Net;
 using BookStoreApp.API.Constants;
 using Microsoft.AspNetCore.Authorization;
+using BookStoreApp.API.Models.Author;
+using AutoMapper.QueryableExtensions;
 
 namespace BookStoreApp.API.Controllers
 {
@@ -32,12 +34,12 @@ namespace BookStoreApp.API.Controllers
 
         // GET: api/Authors
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Author>>> GetAuthors()
+        public async Task<ActionResult<IEnumerable<AuthorReadOnlyDTO>>> GetAuthors()
         {
             try
             {
                 var authors = await _context.Authors.ToListAsync();
-                var authorDTOs = mapper.Map<IEnumerable<AuthorViewDTO>>(authors);
+                var authorDTOs = mapper.Map<IEnumerable<AuthorReadOnlyDTO>>(authors);
                 return Ok(authorDTOs);
             }
             catch (Exception ex)
@@ -50,11 +52,16 @@ namespace BookStoreApp.API.Controllers
 
         // GET: api/Authors/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Author>> GetAuthor(int id)
+        public async Task<ActionResult<AuthorDetailsDTO>> GetAuthor(int id)
         {
             try
             {
-                var author = await _context.Authors.FindAsync(id);
+                var author = await _context.Authors
+                    .Include(q => q.Books)
+                    .Where(q => q.Id == id)
+                    .ProjectTo<AuthorDetailsDTO>(mapper.ConfigurationProvider)
+                    .FirstOrDefaultAsync();
+
 
                 if (author == null)
                 {
@@ -62,7 +69,7 @@ namespace BookStoreApp.API.Controllers
                     return NotFound();
                 }
 
-                return Ok(mapper.Map<AuthorViewDTO>(author));
+                return Ok(author);
             }
             catch (Exception ex)
             {
@@ -79,22 +86,26 @@ namespace BookStoreApp.API.Controllers
         {
             if (id != updatedAuthor.Id) 
             {
+                logger.LogWarning($"Update ID invalid in {nameof(PutAuthor)} - ID: {id}");
                 return BadRequest();
             }
 
             var originalAuthor = await _context.Authors.FindAsync(id);
+            
             if (originalAuthor == null)
             {
+                logger.LogWarning($"{nameof(Author)} record not found in {nameof(PutAuthor)} - ID: {id}");
                 return NotFound();
             }
 
-            _context.Entry(mapper.Map<Author>(updatedAuthor)).State = EntityState.Modified;
+            mapper.Map(updatedAuthor, originalAuthor);  
+            _context.Entry(originalAuthor).State = EntityState.Modified;
 
             try
             {
                 await _context.SaveChangesAsync();
             }
-            catch (DbUpdateConcurrencyException)
+            catch (DbUpdateConcurrencyException ex)
             {
                 if (!await AuthorExistsAsync(id))
                 {
@@ -102,7 +113,8 @@ namespace BookStoreApp.API.Controllers
                 }
                 else
                 {
-                    throw;
+                    logger.LogError(ex, $"Error Performing GET in {nameof(PutAuthor)}");
+                    return StatusCode(500, "500 Error");
                 }
             }
             return NoContent();
